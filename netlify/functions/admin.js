@@ -1,7 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 const crypto = require("crypto");
 
-const store;
+let store;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "CHANGE-ME";
 
 function json(body,statusCode=200){return {statusCode,headers:{"Content-Type":"application/json","Cache-Control":"no-store"},body:JSON.stringify(body)}}
