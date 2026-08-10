@@ -1,7 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 const crypto = require("crypto");
 
-const store = getStore("training-attendance");
+const store;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "CHANGE-ME";
 
 function json(body,statusCode=200){return {statusCode,headers:{"Content-Type":"application/json","Cache-Control":"no-store"},body:JSON.stringify(body)}}
@@ -15,6 +15,7 @@ function csvEscape(v){return '"'+String(v??"").replaceAll('"','""')+'"'}
 
 exports.handler=async function(event){
   try{
+store = getStore("training-attendance");
     const action=event.queryStringParameters?.action;
     if(action==="login"&&event.httpMethod==="POST"){
       const body=JSON.parse(event.body||"{}");
