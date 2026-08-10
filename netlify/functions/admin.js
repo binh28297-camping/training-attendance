@@ -15,7 +15,10 @@ function csvEscape(v){return '"'+String(v??"").replaceAll('"','""')+'"'}
 
 exports.handler=async function(event){
   try{
-store = getStore("training-attendance");
+const store = getStore("training-attendance", {
+  siteID: process.env.SITE_ID,
+  token: process.env.NETLIFY_AUTH_TOKEN
+});
     const action=event.queryStringParameters?.action;
     if(action==="login"&&event.httpMethod==="POST"){
       const body=JSON.parse(event.body||"{}");
@@ -32,7 +35,7 @@ store = getStore("training-attendance");
     }
 
     if(action==="generateCodes"&&event.httpMethod==="POST"){
-      const body=JSON.parse(event.body||"{}");const count=Math.min(Math.max(Number(body.count)||0,1),1000);const codes=[];
+      const =JSON.parse(event.body||"{}");const count=Math.min(Math.max(Number(body.count)||0,1),1000);const codes=[];
       const index=await getJson("code-index",[]);
       const existing=new Set(index);
       for(let i=0;i<count;i++){let code;do{code=randomCode()}while(existing.has(code));existing.add(code);await setJson("code-"+code,{code,registered:false,createdAt:new Date().toISOString()});codes.push(code)}
